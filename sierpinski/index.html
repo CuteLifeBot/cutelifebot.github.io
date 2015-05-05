@@ -7,5 +7,49 @@
     <body>
         <div id="drawing">
         </div>
+        <script src="js/classes.js" />
+        <script>//Hey, this class definition approach
+//looks much cleaner than then others.
+var BaseClass = Class.extend({
+  construct: function() { /* optional constructor method */ },
+ 
+  getName: function() {
+      return "BaseClass(" + this.getId() + ")";
+  },
+ 
+  getId: function() {
+      return 1;
+  }
+});
+ 
+var SubClass = BaseClass.extend({
+  getName: function() {
+      //Calls the getName() method of BaseClass
+      return "SubClass(" + this.getId() + ") extends " +
+          arguments.callee.$.getName.call(this);
+  },
+ 
+  getId: function() {
+      return 2;
+  }
+});
+ 
+var TopClass = SubClass.extend({
+  getName: function() {
+      //Calls the getName() method of SubClass
+      return "TopClass(" + this.getId() + ") extends " +
+          arguments.callee.$.getName.call(this);
+  },
+ 
+  getId: function() {
+      //Just like the last example, this.getId()
+      //always returns the proper value of 2.        
+      return arguments.callee.$.getId.call(this);
+  }
+});
+ 
+//Alerts "TopClass(2) extends SubClass(2) extends BaseClass(2)"
+//Looks good again, and there's no intermediate functions!
+alert(new TopClass().getName());</script>
     </body>
 </html>
