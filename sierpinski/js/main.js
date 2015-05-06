@@ -3,8 +3,9 @@ GAME = {};
 
 
 GAME.begin = function() {
-    GAME.sierpLimit = 100;
-    GAME.mainscreen = new Geometry.Polygon([[150,100],[350,100],[350,300],[150,300]]);
+    GAME.score=0;
+    GAME.zoomRate = 0.00001;
+    GAME.mainscreen = new Geometry.Polygon([[0,0],[GAME.size, 0], [GAME.size, GAME.size], [0, GAME.size]]);
     GAME.gaskets = [
         new Geometry.Sierpinski([[205,405],[405,105],[605,505]], GAME.sierpLimit)
     ];
@@ -13,20 +14,38 @@ GAME.begin = function() {
 }
 
 GAME.update = function(dt) {
-    GAME.gaskets = Geometry.clipGaskets(GAME.gaskets, GAME.mainscreen);
-    for(var k=0; k<GAME.gaskets.length; k++) {
-        GAME.gaskets[k] = GAME.gaskets[k].scale(GAME.mousepoint, 1+0.0005*dt);
+    if(GAME.inProgress) {
+        GAME.gaskets = Geometry.clipGaskets(GAME.gaskets, GAME.mainscreen);
+        for(var k=0; k<GAME.gaskets.length; k++) {
+            GAME.gaskets[k] = GAME.gaskets[k].scale(GAME.mousepoint, 1+GAME.zoomRate*dt);
+        }
+        GAME.actualDt = dt;
+        GAME.score += Math.floor(dt/10);
+        GAME.highScore = Math.max(GAME.score, GAME.highScore);
+        GAME.zoomRate += (5e-8)*dt;
+        // End the game
+        if(GAME.gaskets.length === 0) {
+            GAME.inProgress = false;
+        }
+    } else {
+
     }
-    GAME.actualDt = dt;
 }
 
 GAME.redraw = function() {
     GAME.canvas.clear();
-    GAME.canvas.text(''+GAME.actualDt).move(10,10);
-    GAME.mainscreen.draw(GAME.canvas).fill('none').stroke({color: '#eee', width:2});
-    for(var k=0; k < GAME.gaskets.length; k++) {
-        GAME.gaskets[k].draw(GAME.canvas);
+
+    if(GAME.inProgress) {
+        GAME.mainscreen.draw(GAME.canvas).fill('none').stroke({color: '#eee', width:2});
+        for(var k=0; k < GAME.gaskets.length; k++) {
+            GAME.gaskets[k].draw(GAME.canvas);
+        }
+    } else {
+
     }
+
+    GAME.canvas.text('SCORE:      '+GAME.score).move(10,10);
+    GAME.canvas.text('HIGH SCORE: '+GAME.highScore).move(10,50);
     GAME._drawCursor_();
 }
 
@@ -46,10 +65,20 @@ $(document).ready(function() {
     GAME.size = gridWidthHeight;
     GAME.canvasPos = getPosition(GAME.canvas.node);
     GAME.timestamp = null;
+    GAME.sierpLimit = 400;
     GAME.dt = 30; // milliseconds
+    GAME.inProgress = true;
+    GAME.highScore = 0;
 
     GAME.canvas.mousemove(function(e) {
         GAME.mousepoint = [e.clientX-GAME.canvasPos[0], e.clientY-GAME.canvasPos[1]];
+    });
+
+    GAME.canvas.mouseup(function(e) {
+        if(!GAME.inProgress) {
+            GAME.inProgress = true;
+            GAME.begin();
+        }
     });
 
     // Main loop of the game, updates approximately once every GAME.dt milliseconds
