@@ -27,13 +27,13 @@ Geometry.Polygon.prototype.intersects = function(other) {
 
 // Get the area of this polygon
 Geometry.Polygon.prototype.area = function() {
-    var area = 0.0;
+    var value = 0.0;
     var j = this.verticies.length-1;
     for(var i=0; i<this.verticies.length; i++) {
-        area += (this.verticies[j][0]+this.verticies[i][0])*(this.verticies[j][1]-this.verticies[i][1]);
+        value += (this.verticies[j][0]+this.verticies[i][0])*(this.verticies[j][1]-this.verticies[i][1]);
         j = i;
     }
-    return Math.abs(area/2.0);
+    return Math.abs(value/2.0);
 }
 
 // Scales a polygon by factor relative to point (an array of two floats)
