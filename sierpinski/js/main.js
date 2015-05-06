@@ -41,7 +41,7 @@ GAME.redraw = function() {
             GAME.gaskets[k].draw(GAME.canvas);
         }
     } else {
-
+        GAME.canvas.text('CLICK ANYWHERE TO TRY AGAIN').center(GAME.size/2,GAME.size/2);
     }
 
     GAME.canvas.text('SCORE:      '+GAME.score).move(10,10);
