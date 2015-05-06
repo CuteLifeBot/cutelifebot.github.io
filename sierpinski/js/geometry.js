@@ -13,7 +13,6 @@ Geometry.Polygon.prototype.draw = function(canvas) {
 // Given another Geometry.Polygon, returns true if the polygons intersect,
 // false otherwise
 Geometry.Polygon.prototype.intersects = function(other) {
-    // TODO: Implement
     var vert1 = [];
     for(var i=0; i<this.verticies.length; i++) {
         vert1.push({x: this.verticies[i][0], y: this.verticies[i][1]});
@@ -68,4 +67,49 @@ Geometry.Sierpinski.prototype.draw = function(canvas) {
         drawables[i] = this.nestedShapes[i].draw(canvas);
     }
     return drawables;
+}
+
+
+
+// This function takes an array of gaskets, splits gaskets which are partially or entirely off
+// screen, then removes gaskets that are entirely off screen.  This allows us to infinitely zoom
+// into a gasket while maintaining O(1) memory with respect to time.
+// Parameters: an array of Gaskets, a single rectangle
+// Returns: an array of Gaskets
+Geometry.clipGaskets = function(arrayOfGaskets, rect) {
+    var remainingGaskets = [];
+    var notBaseCase = false;
+    var candidates;
+    for(var k=0; k<arrayOfGaskets.length; k++) {
+        if(arrayOfGaskets[k].nestedShapes) {
+            candidates = [];
+            for(var i=0; i<arrayOfGaskets[k].nestedShapes.length; i++) {
+                if(arrayOfGaskets[k].nestedShapes[i].intersects(rect)) {
+                    candidates.push(arrayOfGaskets[k].nestedShapes[i]);
+                }
+            }
+            if(candidates.length === arrayOfGaskets[k].nestedShapes.length) {
+                // All three sub-gaskets are at least partially inside
+                remainingGaskets.push(arrayOfGaskets[k]);
+            } else {
+                // At least one sub-gasket has left the screen
+                notBaseCase = true;
+                remainingGaskets.push(candidates);
+            }
+        } else { // If it's actually a triangle and not a gasket...
+            remainingGaskets.push(arrayOfGaskets[k]);
+        }
+    }
+    // Flatten array and recursively clip if necessary
+    if(notBaseCase) {
+        return Geometry._flatten_(Geometry.clipGaskets(Geometry._flatten_(remainingGaskets), rect));
+    } else {
+        return Geometry._flatten_(remainingGaskets);
+    }
+}
+
+Geometry._flatten_ = function(arr) {
+    return arr.reduce(function (flat, toFlatten) {
+        return flat.concat(Array.isArray(toFlatten) ? Geometry._flatten_(toFlatten) : toFlatten);
+    }, []);
 }

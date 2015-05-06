@@ -3,16 +3,28 @@ GAME = {};
 
 
 GAME.begin = function() {
-
+    GAME.sierpLimit = 100;
 }
 
 GAME.update = function(dt) {
-    
+    GAME.mainscreen = new Geometry.Polygon([[150,100],[350,100],[350,300],[150,300]]);
+    GAME.gaskets = [
+        new Geometry.Sierpinski([[205,405],[405,105],[605,505]], GAME.sierpLimit)
+    ];
+    GAME.reducedGaskets = Geometry.clipGaskets(GAME.gaskets, GAME.mainscreen);
+    GAME.actualDt = dt;
 }
 
 GAME.redraw = function() {
     GAME.canvas.clear();
-    
+    GAME.canvas.text(''+GAME.actualDt).move(10,10);
+    GAME.mainscreen.draw(GAME.canvas).fill('none').stroke({color: '#eee', width:2});
+    /*for(var k=0; k < GAME.gaskets.length; k++) {
+        GAME.gaskets[k].draw(GAME.canvas);
+    }*/
+    for(var k=0; k < GAME.reducedGaskets.length; k++) {
+        GAME.reducedGaskets[k].draw(GAME.canvas);
+    }
 }
 
 
