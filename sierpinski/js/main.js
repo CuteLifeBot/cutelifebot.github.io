@@ -47,7 +47,7 @@ $(document).ready(function() {
 
     /*
      * WARNING - MAGIC BELOW
-     *//*
+     */
     var animFrame = window.requestAnimationFrame ||
               window.webkitRequestAnimationFrame ||
               window.mozRequestAnimationFrame    ||
@@ -68,7 +68,7 @@ $(document).ready(function() {
             },
             GAME.dt
         );
-    }*/
+    }
     /*
      * WARNING - MAGIC ABOVE
      */
