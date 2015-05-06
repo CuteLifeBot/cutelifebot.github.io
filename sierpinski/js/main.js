@@ -1,5 +1,11 @@
 GAME = {};
 
+
+
+GAME.begin = function() {
+    
+}
+
 GAME.update = function(dt) {
     
 }
@@ -8,6 +14,8 @@ GAME.redraw = function() {
     GAME.canvas.clear();
     
 }
+
+
 
 $(document).ready(function() {
     var scale = 0.9; // Canvas will a square that is 90% the width of the window's smallest dimension
@@ -21,6 +29,7 @@ $(document).ready(function() {
         // At beginning of game
         if(GAME.timestamp === null) {
             GAME.timestamp = timestamp;
+            GAME.begin();
             return;
         }
         // During gameplay
