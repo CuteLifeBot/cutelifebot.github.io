@@ -105,19 +105,19 @@ Geometry.clipGaskets = function(arrayOfGaskets, rect) {
     var notBaseCase = false;
     var candidates;
     for(var k=0; k<arrayOfGaskets.length; k++) {
-        candidates = [];
-        for(var i=0; i<arrayOfGaskets[k].nestedShapes.length; i++) {
-            if(arrayOfGaskets[k].nestedShapes[i].intersects(rect)) {
-                candidates.push(arrayOfGaskets[k].nestedShapes[i]);
+        if(arrayOfGaskets[k].nestedShapes.length === 3) {
+            candidates = [];
+            for(var i=0; i<arrayOfGaskets[k].nestedShapes.length; i++) {
+                if(arrayOfGaskets[k].nestedShapes[i].intersects(rect)) {
+                    candidates.push(arrayOfGaskets[k].nestedShapes[i]);
+                }
             }
-        }
-        if(candidates.length === arrayOfGaskets[k].nestedShapes.length) {
-            // All three sub-gaskets are at least partially inside
-            remainingGaskets.push(arrayOfGaskets[k]);
-        } else {
-            // At least one sub-gasket has left the screen
             notBaseCase = true;
             remainingGaskets.push(candidates);
+        } else {
+            if(arrayOfGaskets[k].intersects(rect)) {
+                remainingGaskets.push(arrayOfGaskets[k]);
+            }
         }
     }
     // Flatten array and recursively clip if necessary
