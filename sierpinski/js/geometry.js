@@ -103,17 +103,14 @@ Geometry.Sierpinski.prototype.scale = function(point, factor) {
 Geometry.clipGaskets = function(arrayOfGaskets, rect) {
     var remainingGaskets = [];
     var notBaseCase = false;
-    var candidates;
     for(var k=0; k<arrayOfGaskets.length; k++) {
         if(arrayOfGaskets[k].nestedShapes.length === 3) {
-            candidates = [];
             for(var i=0; i<arrayOfGaskets[k].nestedShapes.length; i++) {
                 if(arrayOfGaskets[k].nestedShapes[i].intersects(rect)) {
-                    candidates.push(arrayOfGaskets[k].nestedShapes[i]);
+                    remainingGaskets.push(arrayOfGaskets[k].nestedShapes[i]);
                 }
             }
             notBaseCase = true;
-            remainingGaskets.push(candidates);
         } else {
             if(arrayOfGaskets[k].intersects(rect)) {
                 remainingGaskets.push(arrayOfGaskets[k]);
@@ -122,14 +119,8 @@ Geometry.clipGaskets = function(arrayOfGaskets, rect) {
     }
     // Flatten array and recursively clip if necessary
     if(notBaseCase) {
-        return Geometry._flatten_(Geometry.clipGaskets(Geometry._flatten_(remainingGaskets), rect));
+        return Geometry.clipGaskets(remainingGaskets, rect);
     } else {
-        return Geometry._flatten_(remainingGaskets);
+        return remainingGaskets;
     }
-}
-
-Geometry._flatten_ = function(arr) {
-    return arr.reduce(function (flat, toFlatten) {
-        return flat.concat(Array.isArray(toFlatten) ? Geometry._flatten_(toFlatten) : toFlatten);
-    }, []);
 }
