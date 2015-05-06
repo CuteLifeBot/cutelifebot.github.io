@@ -36,6 +36,19 @@ Geometry.Polygon.prototype.area = function() {
     return Math.abs(area/2.0);
 }
 
+// Scales a polygon by factor relative to point (an array of two floats)
+// Does NOT mutate the polygon, but rather returns a new one
+Geometry.Polygon.prototype.scale = function(point, factor) {
+    var newVerticies = [];
+    for(var k=0; k<this.verticies.length; k++) {
+        newVerticies[k] = [
+            (this.verticies[k][0]-point[0])*factor + point[0],
+            (this.verticies[k][1]-point[1])*factor + point[1]
+        ];
+    }
+    return new Geometry.Polygon(newVerticies);
+}
+
 
 
 // minArea = if the area of a Sierpinski triangle is less than or equal to this area, then
@@ -81,23 +94,19 @@ Geometry.clipGaskets = function(arrayOfGaskets, rect) {
     var notBaseCase = false;
     var candidates;
     for(var k=0; k<arrayOfGaskets.length; k++) {
-        if(arrayOfGaskets[k].nestedShapes) {
-            candidates = [];
-            for(var i=0; i<arrayOfGaskets[k].nestedShapes.length; i++) {
-                if(arrayOfGaskets[k].nestedShapes[i].intersects(rect)) {
-                    candidates.push(arrayOfGaskets[k].nestedShapes[i]);
-                }
+        candidates = [];
+        for(var i=0; i<arrayOfGaskets[k].nestedShapes.length; i++) {
+            if(arrayOfGaskets[k].nestedShapes[i].intersects(rect)) {
+                candidates.push(arrayOfGaskets[k].nestedShapes[i]);
             }
-            if(candidates.length === arrayOfGaskets[k].nestedShapes.length) {
-                // All three sub-gaskets are at least partially inside
-                remainingGaskets.push(arrayOfGaskets[k]);
-            } else {
-                // At least one sub-gasket has left the screen
-                notBaseCase = true;
-                remainingGaskets.push(candidates);
-            }
-        } else { // If it's actually a triangle and not a gasket...
+        }
+        if(candidates.length === arrayOfGaskets[k].nestedShapes.length) {
+            // All three sub-gaskets are at least partially inside
             remainingGaskets.push(arrayOfGaskets[k]);
+        } else {
+            // At least one sub-gasket has left the screen
+            notBaseCase = true;
+            remainingGaskets.push(candidates);
         }
     }
     // Flatten array and recursively clip if necessary
