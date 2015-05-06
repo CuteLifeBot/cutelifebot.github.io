@@ -55,6 +55,7 @@ Geometry.Polygon.prototype.scale = function(point, factor) {
 //           we just draw a triangle instead of recursively drawing three new Sierpinskis.
 Geometry.Sierpinski = function(verticies, minArea) {
     Geometry.Polygon.call(this, verticies);
+    this.minArea = minArea;
     if(this.area() <= minArea) {
         this.nestedShapes = [new Geometry.Polygon(verticies)];
     } else {
@@ -80,6 +81,16 @@ Geometry.Sierpinski.prototype.draw = function(canvas) {
         drawables[i] = this.nestedShapes[i].draw(canvas);
     }
     return drawables;
+}
+
+// Returns a new Sierpinski gasket, scaled like above (small triangles that grow
+// are resolved into gaskets)
+Geometry.Sierpinski.prototype.scale = function(point, factor) {
+    // Object.getPrototypeOf(...).scale.call(...) is like doing super(point, factor)
+    return new Geometry.Sierpinski(
+        Object.getPrototypeOf(Geometry.Sierpinski.prototype).scale.call(this, point, factor).verticies,
+        this.minArea
+    );
 }
 
 
