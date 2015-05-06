@@ -7,7 +7,10 @@ GAME.begin = function() {
     GAME.zoomRate = 0.00001;
     GAME.mainscreen = new Geometry.Polygon([[0,0],[GAME.size, 0], [GAME.size, GAME.size], [0, GAME.size]]);
     GAME.gaskets = [
-        new Geometry.Sierpinski([[205,405],[405,105],[605,505]], GAME.sierpLimit)
+        new Geometry.Sierpinski(
+            [[GAME.size*0.07,GAME.size*0.60],[GAME.size*0.85,GAME.size*0.75],[GAME.size*0.56,GAME.size*0.08]],
+            GAME.sierpLimit
+        )
     ];
     GAME.points = 0;
     GAME.mousepoint = [GAME.size/2, GAME.size/2];
