@@ -14,7 +14,16 @@ Geometry.Polygon.prototype.draw = function(canvas) {
 // false otherwise
 Geometry.Polygon.prototype.intersects = function(other) {
     // TODO: Implement
-    return false;
+    var vert1 = [];
+    for(var i=0; i<this.verticies.length; i++) {
+        vert1.push({x: this.verticies[i][0], y: this.verticies[i][1]});
+    }
+    var vert2 = [];
+    for(var j=0; j<other.verticies.length; j++) {
+        vert2.push({x: other.verticies[j][0], y: other.verticies[j][1]});
+    }
+    var intersection = intersectionPolygons(vert1, vert2);
+    return intersection.length === 0;
 }
 
 // Get the area of this polygon
