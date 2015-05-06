@@ -5,7 +5,7 @@ GAME = {};
 GAME.begin = function() {
     GAME.score=0;
     GAME.zoomRate = 0.00001;
-    GAME.mainscreen = new Geometry.Polygon([[0,0],[GAME.size, 0], [GAME.size, GAME.size], [0, GAME.size]]);
+    GAME.mainscreen = new Geometry.Polygon([[0,0], [0, GAME.size], [GAME.size, GAME.size], [GAME.size, 0]]);
     GAME.gaskets = [
         new Geometry.Sierpinski(
             [[GAME.size*0.07,GAME.size*0.60],[GAME.size*0.85,GAME.size*0.75],[GAME.size*0.56,GAME.size*0.08]],
