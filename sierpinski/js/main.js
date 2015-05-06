@@ -15,7 +15,7 @@ GAME.begin = function() {
 GAME.update = function(dt) {
     GAME.gaskets = Geometry.clipGaskets(GAME.gaskets, GAME.mainscreen);
     for(var k=0; k<GAME.gaskets.length; k++) {
-        GAME.gaskets[k] = GAME.gaskets[k].scale([350,300], 1+0.0005*dt);
+        GAME.gaskets[k] = GAME.gaskets[k].scale(GAME.mousepoint, 1+0.0005*dt);
     }
     GAME.actualDt = dt;
 }
