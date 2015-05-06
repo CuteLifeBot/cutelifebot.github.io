@@ -68,7 +68,7 @@ $(document).ready(function() {
     GAME.size = gridWidthHeight;
     GAME.canvasPos = getPosition(GAME.canvas.node);
     GAME.timestamp = null;
-    GAME.sierpLimit = 400;
+    GAME.sierpLimit = Math.pow(GAME.size*0.025, 2);
     GAME.dt = 30; // milliseconds
     GAME.inProgress = true;
     GAME.highScore = 0;
