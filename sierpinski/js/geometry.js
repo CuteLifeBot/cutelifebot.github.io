@@ -23,7 +23,7 @@ Geometry.Polygon.prototype.intersects = function(other) {
         vert2.push({x: other.verticies[j][0], y: other.verticies[j][1]});
     }
     var intersection = intersectionPolygons(vert1, vert2);
-    return intersection.length === 0;
+    return intersection.length > 0;
 }
 
 // Get the area of this polygon
