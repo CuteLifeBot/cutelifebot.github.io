@@ -1,4 +1,4 @@
-var Geometry = Geometry || {};
+var Geometry = {};
 
 Geometry.Polygon = function(verticies) {
     this.verticies = verticies;
