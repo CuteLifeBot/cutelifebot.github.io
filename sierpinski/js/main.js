@@ -77,10 +77,6 @@ $(document).ready(function() {
         GAME.mousepoint = [e.clientX-GAME.canvasPos[0], e.clientY-GAME.canvasPos[1]];
     });
 
-    GAME.canvas.touchmove(function(e) {
-        GAME.mousepoint = [e.clientX-GAME.canvasPos[0], e.clientY-GAME.canvasPos[1]];
-    });
-
     GAME.canvas.mouseup(function(e) {
         if(!GAME.inProgress) {
             GAME.inProgress = true;
