@@ -13,9 +13,9 @@ function getAndSimulate() {
     var result = simulate(usrPerDay, initCoins, trials);
 
     rde.innerText = result.daysSued.toString() + "/" + trials;
-    rde.innerText = result.daysSued.toString() + "/" + trials;
+    rde.textContent = result.daysSued.toString() + "/" + trials;
     pse.innerText = result.probSued.toString();
-    pse.innerText = result.probSued.toString();
+    pse.textContent = result.probSued.toString();
 }
 
 function simulate(usrPerDay, initCoins, trials) {
