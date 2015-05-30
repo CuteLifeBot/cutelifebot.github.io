@@ -9,14 +9,14 @@
             <table>
                 <tr>
                     <td class="param-name">Players per day</td>
-                    <td class="param-val" id="usrPerDay">
-                        <input type="text" value="100" />
+                    <td class="param-val">
+                        <input type="text" id="usrPerDay" value="100" />
                     </td>
                 </tr>
                 <tr>
                     <td class="param-name">Coins at start of day</td>
-                    <td class="param-val" id="initCoins">
-                        <input type="text" value="10" />
+                    <td class="param-val">
+                        <input type="text" id="initCoins" value="10" />
                     </td>
                 </tr>
                 <tr>
@@ -24,18 +24,25 @@
                 </tr>
                 <tr>
                     <td class="param-name">Number of trials (days)</td>
-                    <td class="param-val" id="trials">
-                        <input type="text" value="1000" />
+                    <td class="param-val">
+                        <input type="text" id="trials" value="1000" />
                     </td>
-                </tr>
+                </tr>s
                 <tr>
                     <td>&nbsp;</td><td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td class="result-name">Probability of getting sued:&nbsp;</td>
+                    <td class="result-name">Days sued / total days:</td>
+                    <td class="result-val" id="resDays">(No simulation has been run)</td>
+                </tr>
+                <tr>
+                    <td class="result-name">Fraction of days sued:</td>
                     <td class="result-val" id="pSued">(No simulation has been run)</td>
                 </tr>
             </table>
+            <br />
+            <button type="button" onclick="getAndSimulate();">Run simulation</button>
         </div>
+        <script src="js/casino.js"></script>
     </body>
 </html>
