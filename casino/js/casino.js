@@ -46,6 +46,7 @@ function simulate(usrPerDay, initCoins, trials) {
                 coinsInSlot -= winnings;
                 suedToday = coinsInSlot < 0;
                 if(suedToday) {
+                    // No need to let the remaining players play for today
                     break;
                 }
             }
