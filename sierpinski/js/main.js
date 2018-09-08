@@ -39,7 +39,7 @@ GAME.redraw = function() {
     GAME.canvas.clear();
 
     if(GAME.inProgress) {
-        GAME.mainscreen.draw(GAME.canvas).fill('none').stroke({color: '#eee', width:2});
+        GAME.mainscreen.draw(GAME.canvas, true).fill('none').stroke({color: '#eee', width:2});
         for(var k=0; k < GAME.gaskets.length; k++) {
             GAME.gaskets[k].draw(GAME.canvas);
         }
@@ -68,7 +68,7 @@ $(document).ready(function() {
     GAME.size = gridWidthHeight;
     GAME.canvasPos = [10, 10];
     GAME.timestamp = null;
-    GAME.sierpLimit = Math.pow(GAME.size*0.02, 2);
+    GAME.sierpLimit = Math.pow(GAME.size*0.1, 2);
     GAME.dt = 30; // milliseconds
     GAME.inProgress = true;
     GAME.highScore = 0;

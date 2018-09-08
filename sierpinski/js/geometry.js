@@ -6,8 +6,22 @@ Geometry.Polygon = function(verticies) {
 
 // Provided an SVN.draw as an argument, draws the polygon onto that
 // SVN canvas.  Returns the SVN object
-Geometry.Polygon.prototype.draw = function(canvas) {
-    return canvas.polygon(this.verticies);
+Geometry.Polygon.prototype.draw = function(canvas, isBoundary) {
+    if (isBoundary) {
+        return canvas.polygon(this.verticies);
+    }
+    var IMG_WIDTH = 678.0;
+    var IMG_HEIGHT = 582.0;
+    var OPACITY_FACTOR = 2.0; // Chosen somewhat arbitrarily, depends on GAME.sierpLimit
+    var maxvert_X = Math.max(this.verticies[0][0], this.verticies[1][0], this.verticies[2][0]);
+    var minvert_X = Math.min(this.verticies[0][0], this.verticies[1][0], this.verticies[2][0]);
+    var minvert_Y = Math.min(this.verticies[0][1], this.verticies[1][1], this.verticies[2][1]);
+    var width = maxvert_X-minvert_X;
+    var scaleFactor = width/IMG_WIDTH;
+
+    var img = canvas.image('img/base_678x582.png');
+    img.size(IMG_WIDTH*scaleFactor, IMG_HEIGHT*scaleFactor).move(minvert_X, minvert_Y).opacity(1-OPACITY_FACTOR*scaleFactor);
+    return img;
 }
 
 // Given another Geometry.Polygon, returns true if the polygons intersect,
