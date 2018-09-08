@@ -66,9 +66,9 @@ $(document).ready(function() {
     var gridWidthHeight = 0.9*Math.min($(document).width(), $(document).height());
     GAME.canvas = SVG('canvas').size(gridWidthHeight, gridWidthHeight);
     GAME.size = gridWidthHeight;
-    GAME.canvasPos = getPosition(GAME.canvas.node);
+    GAME.canvasPos = [10, 10];
     GAME.timestamp = null;
-    GAME.sierpLimit = Math.pow(GAME.size*0.025, 2);
+    GAME.sierpLimit = Math.pow(GAME.size*0.02, 2);
     GAME.dt = 30; // milliseconds
     GAME.inProgress = true;
     GAME.highScore = 0;
@@ -132,17 +132,5 @@ $(document).ready(function() {
     /*
      * WARNING - MAGIC ABOVE
      */
-
-    function getPosition(element) {
-        var xPosition = 0;
-        var yPosition = 0;
-
-        while(element) {
-            xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-            yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
-            element = element.offsetParent;
-        }
-        return [xPosition, yPosition];
-    }
 
 });
